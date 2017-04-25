@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Tests
         }
 
         [Fact]
-        public void WhenCreatingWorkspaceThenCanRetrieveCompositionContext()
+        public void WhenGettingCompositionContext()
         {
             var (workspace, _) = CreateWorkspaceAndProject(LanguageNames.CSharp);
 
@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Tests
         }
 
         [Fact]
-        public async Task WhenGettingCodeFixesThenFindsThem()
+        public async Task WhenGettingCodeFix()
         {
             var vb = @"
 Public Class TypeGetter
@@ -53,7 +53,51 @@ End Class";
         }
 
         [Fact]
-        public async Task WhenApplyingBasicCodeFixThenSucceeds()
+        public async Task WhenGettingAllCodeFixes()
+        {
+            var cs = @"
+using System;
+
+public abstract class BaseDisposable
+{
+   public abstract bool IsDisposed { get; }
+}
+
+public class Disposable : BaseDisposable, IDisposable
+{
+}
+";
+
+            var (workspace, project) = CreateWorkspaceAndProject(LanguageNames.CSharp);
+
+            var document = workspace.AddDocument(DocumentInfo.Create(
+                DocumentId.CreateNewId(project.Id),
+                "code.cs",
+                filePath: Path.GetTempFileName(),
+                loader: TextLoader.From(TextAndVersion.Create(SourceText.From(cs), VersionStamp.Create()))));
+
+            var service = workspace.Services.GetRequiredService<ICodeFixService>();
+            var fixes = await service.GetCodeFixes(document, TimeoutToken(5));
+
+            var providedBy = fixes.GroupBy(x => x.Provider);
+
+            Assert.True(providedBy.Any(x => x.Key == CodeFixNames.CSharp.ImplementInterface));
+            Assert.True(providedBy.Any(x => x.Key == CodeFixNames.CSharp.ImplementAbstractClass));
+        }
+
+        [Fact]
+        public void WhenGettingProvider()
+        {
+            var (workspace, project) = CreateWorkspaceAndProject(LanguageNames.CSharp);
+            var service = workspace.Services.GetRequiredService<ICodeFixService>();
+
+            var provider = service.GetCodeFixProvider(project.Language, CodeFixNames.All.ImplementInterface);
+
+            Assert.NotNull(provider);
+        }
+
+        [Fact]
+        public async Task WhenApplyingBasicCodeFix()
         {
             var vb = @"
 Public Class TypeGetter
@@ -84,7 +128,7 @@ End Class";
         }
 
         [Fact]
-        public async Task WhenApplyingCSharpCodeFixThenSucceeds()
+        public async Task WhenApplyingCSharpCodeFix()
         {
             var cs = @"
 using System;

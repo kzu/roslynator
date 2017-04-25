@@ -20,24 +20,51 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         public CodeFixService([ImportMany]IEnumerable<Lazy<CodeFixProvider, CodeChangeProviderMetadata>> codeFixProviders)
             => this.codeFixProviders = codeFixProviders;
 
-        public async Task<ImmutableArray<ICodeFix>> GetCodeFixes(Document document, string codeFixerName, CancellationToken cancellationToken = default(CancellationToken))
+        public CodeFixProvider GetCodeFixProvider(string language, string codeFixName)
+            => codeFixProviders
+                .Where(x => x.Metadata.Languages.Contains(language) && x.Metadata.Name == codeFixName)
+                .Select(x => x.Value)
+                .FirstOrDefault();
+
+        public async Task<ImmutableArray<ICodeFix>> GetCodeFixes(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
             var compilation = await document.Project.GetCompilationAsync(cancellationToken);
             var span = (await document.GetSyntaxRootAsync()).FullSpan;
-            var codeFixProvider = codeFixProviders
-                .Where(x => x.Metadata.Name == codeFixerName && x.Metadata.Languages.Contains(document.Project.Language))
-                .Select(x => x.Value).FirstOrDefault();
+            var diagnostics = new Lazy<ImmutableArray<Diagnostic>>(() => compilation.GetDiagnostics(cancellationToken));
+            var providers = codeFixProviders
+                .Where(x => x.Metadata.Languages.Contains(document.Project.Language));
 
-            if (codeFixProvider == null)
+            var codeFixes = new List<ICodeFix>();
+            foreach (var provider in providers)
+            {
+                foreach (var diagnostic in diagnostics.Value.Where(x => provider.Value.FixableDiagnosticIds.Contains(x.Id)))
+                {
+                    await provider.Value.RegisterCodeFixesAsync(
+                        new CodeFixContext(document, diagnostic,
+                        (action, diag) => codeFixes.Add(new CodeFixAdapter(action, diag, provider.Metadata.Name)),
+                        cancellationToken));
+                }
+            }
+
+            return codeFixes.ToImmutableArray();
+        }
+
+        public async Task<ImmutableArray<ICodeFix>> GetCodeFixes(Document document, string codeFixName, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var compilation = await document.Project.GetCompilationAsync(cancellationToken);
+            var span = (await document.GetSyntaxRootAsync()).FullSpan;
+            var provider = GetCodeFixProvider(document.Project.Language, codeFixName);
+
+            if (provider == null)
                 return ImmutableArray<ICodeFix>.Empty;
 
-            var diagnostics = compilation.GetDiagnostics(cancellationToken).Where(x => codeFixProvider.FixableDiagnosticIds.Contains(x.Id));
+            var diagnostics = compilation.GetDiagnostics(cancellationToken).Where(x => provider.FixableDiagnosticIds.Contains(x.Id));
             var codeFixes = new List<ICodeFix>();
             foreach (var diagnostic in diagnostics)
             {
-                await codeFixProvider.RegisterCodeFixesAsync(
+                await provider.RegisterCodeFixesAsync(
                     new CodeFixContext(document, diagnostic, 
-                    (a, d) => codeFixes.Add(new CodeFixAdapter(a, d)), 
+                    (action, diag) => codeFixes.Add(new CodeFixAdapter(action, diag, codeFixName)), 
                     cancellationToken));
             }
 
@@ -45,3 +72,4 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         }
     }
 }
+

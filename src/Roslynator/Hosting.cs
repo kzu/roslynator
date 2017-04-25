@@ -6,8 +6,20 @@ using Microsoft.CodeAnalysis.Host.Mef;
 
 namespace Microsoft.CodeAnalysis.Diagnostics
 {
+    /// <summary>
+    /// Creates <see cref="HostServices"/> that contain the Roslynator 
+    /// extensions, accessible via the <see cref="Workspace.Services"/>.
+    /// </summary>
     public static partial class Hosting
     {
+        /// <summary>
+        /// Creates the <see cref="HostServices"/> for using when creating 
+        /// <see cref="Workspace"/>s and leveraging the services provided 
+        /// by Roslynator, such as the <see cref="ICodeFixService"/> and 
+        /// <see cref="ICompositionContextService"/>.
+        /// </summary>
+        /// <param name="additionalAssemblies">Optional additional assemblies 
+        /// to inject into the host services via MEF.</param>
         public static HostServices CreateHost(params Assembly[] additionalAssemblies)
         {
             var composition = new ContainerConfiguration()
@@ -18,7 +30,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     .AddRange(additionalAssemblies ?? Enumerable.Empty<Assembly>()))
                 .CreateContainer();
 
-            // Setup a mechanism to import the CompositionHost from anywhere if needed.
+            // Setup a mechanism to import the CompositionContext from anywhere if needed.
             composition.GetExport<CompositionContextExporter>().CompositionHost = composition;
 
             return MefHostServices.Create(composition);
