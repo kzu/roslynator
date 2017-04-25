@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>Roslyn.Services.Editor.UnitTests</AssemblyName>
+    <RootNamespace>Microsoft.CodeAnalysis.Diagnostics</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Roslynator\Roslynator.csproj" />
+  </ItemGroup>
+
+</Project>
