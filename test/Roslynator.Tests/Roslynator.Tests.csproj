@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Roslynator.Implementation\Roslynator.Implementation.csproj" />
-    <ProjectReference Include="..\..\src\Roslynator\Roslynator.csproj" />
+    <ProjectReference Include="..\..\src\Roslynator.Interfaces\Roslynator.Interfaces.csproj" />
   </ItemGroup>
 
   <ItemGroup>

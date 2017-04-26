@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     .WithMembers(List<MemberDeclarationSyntax>(codeFixes.Select(lang
                         => ClassDeclaration(lang.Key.Replace(" ", "").Replace("#", "Sharp"))
                         .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword), Token(SyntaxKind.PartialKeyword)))
-                        .WithMembers(List<MemberDeclarationSyntax>(lang.Value.Select(fix
+                        .WithMembers(List<MemberDeclarationSyntax>(lang.Value.OrderBy(x => x).Select(fix
                             => FieldDeclaration(VariableDeclaration(
                                 PredefinedType(Token(SyntaxKind.StringKeyword)),
                                 SeparatedList(new[] {
