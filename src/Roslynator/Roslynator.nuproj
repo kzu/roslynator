@@ -38,13 +38,11 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <!--<Target Name="ConfigureProjectReferences" AfterTargets="PrepareProjectReferences" />
+  <Target Name="FixRestore" AfterTargets="_GenerateRestoreProjectPathItemsPerFramework" />
     <ItemGroup>
-      <_MSBuildProjectReferenceExistent Condition="'%(_MSBuildProjectReferenceExistent.SkipGetTargetFrameworkProperties)' == ''">
-        <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
-      </_MSBuildProjectReferenceExistent>
+      <_RestoreProjectPathItems Remove="*" />
     </ItemGroup>
-  </Target>-->
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets')" />
 </Project>
