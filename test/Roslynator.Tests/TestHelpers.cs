@@ -11,7 +11,7 @@ static class TestHelpers
 {
     public static (AdhocWorkspace workspace, Project project) CreateWorkspaceAndProject(string language)
     {
-        var host = Hosting.CreateHost(typeof(TestHelpers).Assembly);
+        var host = Roslynator.CreateHost(typeof(TestHelpers).Assembly);
         var workspace = new AdhocWorkspace(host, WorkspaceKind.Host);
         var options = language == LanguageNames.CSharp ?
                 (CompilationOptions)new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary) :

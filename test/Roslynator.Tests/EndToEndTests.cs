@@ -14,7 +14,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Tests
         [Fact]
         public void CreatingHost()
         {
-            var host = Hosting.CreateHost();
+            var host = Roslynator.CreateHost();
 
             Assert.NotNull(host);
         }
