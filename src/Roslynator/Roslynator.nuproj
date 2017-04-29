@@ -17,6 +17,8 @@
     <Product>Roslynator 9000</Product>
     <Copyright>Copyright © kzu</Copyright>
     <ReferringTargetFrameworkForProjectReferences>any</ReferringTargetFrameworkForProjectReferences>
+    <ResolvePackageDependenciesForBuild>false</ResolvePackageDependenciesForBuild>
+    <ResolveNuGetPackages>false</ResolveNuGetPackages>
   </PropertyGroup>
   <PropertyGroup Label="Globals">
     <OutputPath>bin\$(Configuration)\</OutputPath>
@@ -38,10 +40,49 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <Target Name="FixRestore" AfterTargets="_GenerateRestoreProjectPathItemsPerFramework" />
+  <Target Name="FixRestore" AfterTargets="_GenerateRestoreProjectPathItemsPerFramework">
     <ItemGroup>
-      <_RestoreProjectPathItems Remove="*" />
+      <_RestoreProjectPathItems Remove="@(_RestoreProjectPathItems)" />
     </ItemGroup>
+  </Target>
+  <Target Name="FixRestore2" AfterTargets="_GenerateRestoreProjectPathItems">
+    <ItemGroup>
+      <_CurrentRestoreProjectPathItems Remove="@(_CurrentRestoreProjectPathItems)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="FixRestore3" AfterTargets="_GenerateProjectRestoreGraph">
+    <ItemGroup>
+      <_RestoreGraphEntry Remove="@(_RestoreGraphEntry)" Condition="'%(Type)' == 'ProjectReference'" />
+    </ItemGroup>    
+  </Target>
+  <Target Name="FixRestore4" AfterTargets="_GenerateRestoreGraph">
+    <ItemGroup>
+      <_RestoreGraphEntry Remove="@(_RestoreGraphEntry)" Condition="'%(Type)' == 'ProjectReference'" />
+    </ItemGroup>    
+  </Target>
+  <Target Name="FixRestore5" BeforeTargets="_GenerateRestoreDependencies">
+    <PropertyGroup>
+      <_GenerateRestoreGraphProjectEntryInputProperties>
+        $(_GenerateRestoreGraphProjectEntryInputProperties);
+        _RemoveProjectReferencesForRestore=true;
+      </_GenerateRestoreGraphProjectEntryInputProperties>
+    </PropertyGroup>
+  </Target>
+  <ItemGroup Condition="'$(_RemoveProjectReferencesForRestore)' == 'true'">
+      <ProjectReference Remove="@(ProjectReference)" />
+  </ItemGroup>
+  <Target Name="FixRestore6" Condition="'$(_RemoveProjectReferencesForRestore)' == 'true'" BeforeTargets="ResolveReferences;_GenerateProjectRestoreGraphPerFramework">
+    <ItemGroup>
+      <ProjectReference Remove="@(ProjectReference)" />
+      <_GetRestoreTargetFrameworksAsItems Remove="@(_GetRestoreTargetFrameworksAsItems)" />
+      <_MSBuildProjectReferenceExistent Remove="@(_MSBuildProjectReferenceExistent)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="FixAssemblyReferences" BeforeTargets="ResolveAssemblyReferences">
+	  <ItemGroup>
+		  <Reference Remove="@(Reference)" />
+		  <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" />
+	  </ItemGroup>
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets')" />
