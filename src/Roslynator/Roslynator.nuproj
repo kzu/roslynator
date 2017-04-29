@@ -4,7 +4,6 @@
   <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.props" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.props')" />
   <PropertyGroup>
     <PackageId>Roslynator</PackageId>
-    <Version>0.1.2</Version>
     <Authors>Daniel Cazzulino</Authors>
     <Company />
     <Description>Exposes some Roslyn internals in a nice way, such as executing code fixes or retrieving the CompositionContext for a Workspace.</Description>
@@ -53,12 +52,12 @@
   <Target Name="FixRestore3" AfterTargets="_GenerateProjectRestoreGraph">
     <ItemGroup>
       <_RestoreGraphEntry Remove="@(_RestoreGraphEntry)" Condition="'%(Type)' == 'ProjectReference'" />
-    </ItemGroup>    
+    </ItemGroup>
   </Target>
   <Target Name="FixRestore4" AfterTargets="_GenerateRestoreGraph">
     <ItemGroup>
       <_RestoreGraphEntry Remove="@(_RestoreGraphEntry)" Condition="'%(Type)' == 'ProjectReference'" />
-    </ItemGroup>    
+    </ItemGroup>
   </Target>
   <Target Name="FixRestore5" BeforeTargets="_GenerateRestoreDependencies">
     <PropertyGroup>
@@ -69,7 +68,7 @@
     </PropertyGroup>
   </Target>
   <ItemGroup Condition="'$(_RemoveProjectReferencesForRestore)' == 'true'">
-      <ProjectReference Remove="@(ProjectReference)" />
+    <ProjectReference Remove="@(ProjectReference)" />
   </ItemGroup>
   <Target Name="FixRestore6" Condition="'$(_RemoveProjectReferencesForRestore)' == 'true'" BeforeTargets="ResolveReferences;_GenerateProjectRestoreGraphPerFramework">
     <ItemGroup>
@@ -79,10 +78,10 @@
     </ItemGroup>
   </Target>
   <Target Name="FixAssemblyReferences" BeforeTargets="ResolveAssemblyReferences">
-	  <ItemGroup>
-		  <Reference Remove="@(Reference)" />
-		  <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" />
-	  </ItemGroup>
+    <ItemGroup>
+      <Reference Remove="@(Reference)" />
+      <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" />
+    </ItemGroup>
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets')" />

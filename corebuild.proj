@@ -10,7 +10,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GitInfo" Version="*" />
 		<PackageReference Include="xunit.runner.console" Version="2.3.0-beta1-build3642" />
 	</ItemGroup>
 
@@ -49,24 +48,15 @@
 		<MSBuild Projects="@(Solution)" Targets="Restore" RemoveProperties="Configuration;Platform" />
 	</Target>
 
-	<Target Name="GitVersion">
-		<PropertyGroup>
-			<GitBaseVersionMajor>0</GitBaseVersionMajor>
-			<GitBaseVersionMinor>1</GitBaseVersionMinor>
-			<GitBaseVersionPatch>0</GitBaseVersionPatch>
-			<GitCommits>0</GitCommits>
-		</PropertyGroup>
-	</Target>
-
-	<Target Name="_Setup" DependsOnTargets="SetVersion">
+	<Target Name="_Setup">
 		<!-- Update AppVeyor build # to match the actual one being used -->
-		<Exec Command="appveyor UpdateBuild -Version $(PackageVersion)"
+		<Exec Command="appveyor UpdateBuild -Version $(Version)"
 			  Condition=" '$(APPVEYOR)' == 'true' And '$(target)' != 'Restore' "
 			  ContinueOnError="true" />
 
 		<MakeDir Directories="$(Out)" Condition="!Exists('$(Out)')" />
 	</Target>
 
-	<Import Project="src\Version.targets" />
+	<Import Project="Version.props" />
 	<Import Project="corebuild\corebuild.targets" />
 </Project>
