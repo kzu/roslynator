@@ -2,7 +2,7 @@
 	<Import Project="corebuild\corebuild.props" />
 
 	<PropertyGroup>
-		<Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+		<Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
 		<Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
 		<IntermediateOutputPath>$(RestoreOutputPath)\</IntermediateOutputPath>
 		<Out Condition="'$(Out)' == ''">$(MSBuildThisFileDirectory)out</Out>
@@ -38,11 +38,12 @@
 	</Target>
 
 	<Target Name="Clean">
+    <Exec Command='rd /s/q "$(Out)"' Condition="'$(OS)' == 'Windows_NT'" />
 		<Exec Command='for /d /r . %%d in (bin,obj) do @if exist "%%d" rd /s/q "%%d"'
 		      Condition="'$(OS)' == 'Windows_NT'" />
 	</Target>
 
-	<Target Name="Rebuild" DependsOnTargets="Clean;Build" />
+	<Target Name="Rebuild" DependsOnTargets="Clean;Restore;Build" />
 
 	<Target Name="_Restore" AfterTargets="Restore">
 		<MSBuild Projects="@(Solution)" Targets="Restore" RemoveProperties="Configuration;Platform" />

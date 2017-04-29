@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Tests
             var (workspace, _) = CreateWorkspaceAndProject(LanguageNames.CSharp);
 
             var composition = workspace.Services.GetRequiredService<ICompositionContextService>().CompositionContext;
-
+            
             Assert.NotNull(composition);
         }
 
