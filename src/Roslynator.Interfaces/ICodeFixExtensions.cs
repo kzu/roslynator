@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeActions;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace Microsoft.CodeAnalysis.CodeFixes
 {
     /// <summary>
     /// Provides the <see cref="ApplyAsync"/> extension method for <see cref="ICodeFix"/> 

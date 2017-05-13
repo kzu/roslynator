@@ -1,10 +1,9 @@
 ﻿using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Host;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace Microsoft.CodeAnalysis.CodeFixes
 {
     /// <summary>
     /// An <see cref="IWorkspaceService"/> that can be retrieved from 

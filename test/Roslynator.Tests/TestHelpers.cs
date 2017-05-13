@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.VisualBasic;
 
 static class TestHelpers
@@ -14,7 +13,7 @@ static class TestHelpers
         var host = Roslynator.CreateHost(typeof(TestHelpers).Assembly);
         var workspace = new AdhocWorkspace(host, WorkspaceKind.Host);
         var options = language == LanguageNames.CSharp ?
-                (CompilationOptions)new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary) :
+                (CompilationOptions)new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, true, generalDiagnosticOption: ReportDiagnostic.Error, warningLevel: 1, concurrentBuild: false, deterministic: true) :
                 (CompilationOptions)new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
 
         var project = workspace.AddProject(ProjectInfo.Create(
@@ -24,8 +23,10 @@ static class TestHelpers
             "code.dll", 
             language, 
             compilationOptions: options,
-            metadataReferences: ReferencePaths.Paths
-                .Select(path => MetadataReference.CreateFromFile(path))));
+            metadataReferences: new [] { MetadataReference.CreateFromFile(typeof(string).Assembly.ManifestModule.FullyQualifiedName) }
+            //metadataReferences: ReferencePaths.Paths
+            //    .Select(path => MetadataReference.CreateFromFile(path))
+        ));
 
         return (workspace, project);
     }

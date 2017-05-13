@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Text;
 using Xunit;
 using static TestHelpers;
 
 namespace Microsoft.CodeAnalysis.Diagnostics.Tests
-
 {
     public class EndToEndTests
     {
@@ -69,7 +69,7 @@ public class Disposable : BaseDisposable, IDisposable
 ";
 
             var (workspace, project) = CreateWorkspaceAndProject(LanguageNames.CSharp);
-
+            
             var document = workspace.AddDocument(DocumentInfo.Create(
                 DocumentId.CreateNewId(project.Id),
                 "code.cs",

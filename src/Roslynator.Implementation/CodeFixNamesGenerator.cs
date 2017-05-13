@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition.Hosting;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Host.Mef;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace Microsoft.CodeAnalysis.CodeFixes
 {
     class CodeFixNamesGenerator
     {

@@ -1,7 +1,7 @@
 ﻿using System.Composition;
 using System.Composition.Hosting;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace Microsoft.CodeAnalysis.Host
 {
     /// <summary>
     /// Internal component that exports via regular MEF the 

@@ -1,4 +1,4 @@
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace Microsoft.CodeAnalysis.CodeFixes
 {
     partial class CodeFixNames
     {

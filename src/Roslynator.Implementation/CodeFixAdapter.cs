@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CodeActions;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace Microsoft.CodeAnalysis.CodeFixes
 {
     class CodeFixAdapter : ICodeFix
     {
@@ -17,5 +17,10 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         public ImmutableArray<Diagnostic> Diagnostics { get; }
 
         public string Provider { get; }
+
+        public override string ToString()
+        {
+            return Action.Title + " from '" + Provider + "'";
+        }
     }
 }

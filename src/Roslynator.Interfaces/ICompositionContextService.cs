@@ -1,7 +1,6 @@
 ﻿using System.Composition;
-using Microsoft.CodeAnalysis.Host;
 
-namespace Microsoft.CodeAnalysis.Diagnostics
+namespace Microsoft.CodeAnalysis.Host
 {
     /// <summary>
     /// Allows retrieving MEF services directly from a <see cref="Workspace.Services"/> 
