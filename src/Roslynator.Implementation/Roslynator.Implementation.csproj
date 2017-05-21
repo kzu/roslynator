@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <AssemblyName>Roslyn.Services.Editor.UnitTests</AssemblyName>
     <RootNamespace>Microsoft.CodeAnalysis.Diagnostics</RootNamespace>
     <IsPackable>false</IsPackable>
@@ -9,15 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NuGet.Build.Packaging" Version="0.1.248" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Roslynator.Interfaces\Roslynator.Interfaces.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
 
 </Project>

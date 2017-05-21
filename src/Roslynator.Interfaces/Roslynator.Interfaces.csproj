@@ -1,14 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <RootNamespace>Microsoft.CodeAnalysis.Diagnostics</RootNamespace>
     <IsPackable>false</IsPackable>
     <IncludeFrameworkReferencesInPackage>false</IncludeFrameworkReferencesInPackage>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NuGet.Build.Packaging" Version="0.1.248" PrivateAssets="All" />
-  </ItemGroup>
 
 </Project>

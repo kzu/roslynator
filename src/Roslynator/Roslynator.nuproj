@@ -2,6 +2,9 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.props" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.props')" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>5baa7158-54c2-46da-8126-66da732db857</ProjectGuid>
+  </PropertyGroup>
   <PropertyGroup>
     <PackageId>Roslynator</PackageId>
     <Authors>Daniel Cazzulino</Authors>
@@ -14,20 +17,23 @@
     <PackageTags>codegen, roslyn</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Product>Roslynator 9000</Product>
+    <Title>Roslynator 9000</Title>
     <Copyright>Copyright © kzu</Copyright>
-    <ReferringTargetFrameworkForProjectReferences>any</ReferringTargetFrameworkForProjectReferences>
-    <ResolvePackageDependenciesForBuild>false</ResolvePackageDependenciesForBuild>
-    <ResolveNuGetPackages>false</ResolveNuGetPackages>
+
     <ImportDirectoryBuildProps>false</ImportDirectoryBuildProps>
     <ImportDirectoryBuildTargets>false</ImportDirectoryBuildTargets>
-  </PropertyGroup>
-  <PropertyGroup Label="Globals">
+    
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <PackageTargetFallback>net11;net20;net35;net40;net403;net45;net451;net452;net46;net461;net462;net47;netcore;netcore45;netcore451;netcore50;win8;win81;win10;sl4;sl5;wp;wp7;wp75;wp8;wp81;wpa81;uap;uap10;netstandard1.0;netstandard1.1;netstandard1.2;netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0;netcoreapp1.0;netcoreapp2.0;monoandroid;monotouch;monomac;xamarinios;xamarinmac;xamarinpsthree;xamarinpsfour;xamarinpsvita;xamarinwatchos;xamarintvos;xamarinxboxthreesixty;xamarinxboxone</PackageTargetFallback>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <ProjectGuid>45005b71-b049-415c-8ef9-9ffeca4ad9d8</ProjectGuid>
+    <ProjectGuid>{5DD5E4FA-CB73-4610-85AB-557B54E96AA9}</ProjectGuid>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration">
-    <Title>Roslynator 9000</Title>
-  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" />
   <ItemGroup>
     <None Include="Readme.txt">
       <IncludeInPackage>true</IncludeInPackage>
@@ -35,62 +41,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Roslynator.Implementation\Roslynator.Implementation.csproj" />
-    <ProjectReference Include="..\Roslynator.Interfaces\Roslynator.Interfaces.csproj" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.1.283" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.0.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="2.0.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Features" Version="2.0.0" />
-    <PackageReference Include="NuGet.Build.Packaging">
-      <Version>0.1.248</Version>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <ProjectReference Include="..\Roslynator.Implementation\Roslynator.Implementation.csproj" />
   </ItemGroup>
-  <Target Name="FixRestore" AfterTargets="_GenerateRestoreProjectPathItemsPerFramework">
-    <ItemGroup>
-      <_RestoreProjectPathItems Remove="@(_RestoreProjectPathItems)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="FixRestore2" AfterTargets="_GenerateRestoreProjectPathItems">
-    <ItemGroup>
-      <_CurrentRestoreProjectPathItems Remove="@(_CurrentRestoreProjectPathItems)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="FixRestore3" AfterTargets="_GenerateProjectRestoreGraph">
-    <ItemGroup>
-      <_RestoreGraphEntry Remove="@(_RestoreGraphEntry)" Condition="'%(Type)' == 'ProjectReference'" />
-    </ItemGroup>
-  </Target>
-  <Target Name="FixRestore4" AfterTargets="_GenerateRestoreGraph">
-    <ItemGroup>
-      <_RestoreGraphEntry Remove="@(_RestoreGraphEntry)" Condition="'%(Type)' == 'ProjectReference'" />
-    </ItemGroup>
-  </Target>
-  <Target Name="FixRestore5" BeforeTargets="_GenerateRestoreDependencies">
-    <PropertyGroup>
-      <_GenerateRestoreGraphProjectEntryInputProperties>
-				$(_GenerateRestoreGraphProjectEntryInputProperties);
-				_RemoveProjectReferencesForRestore=true;
-			</_GenerateRestoreGraphProjectEntryInputProperties>
-    </PropertyGroup>
-  </Target>
-  <ItemGroup Condition="'$(_RemoveProjectReferencesForRestore)' == 'true'">
-    <ProjectReference Remove="@(ProjectReference)" />
-  </ItemGroup>
-  <Target Name="FixRestore6" Condition="'$(_RemoveProjectReferencesForRestore)' == 'true'" BeforeTargets="ResolveReferences;_GenerateProjectRestoreGraphPerFramework">
-    <ItemGroup>
-      <ProjectReference Remove="@(ProjectReference)" />
-      <_GetRestoreTargetFrameworksAsItems Remove="@(_GetRestoreTargetFrameworksAsItems)" />
-      <_MSBuildProjectReferenceExistent Remove="@(_MSBuildProjectReferenceExistent)" />
-    </ItemGroup>
-  </Target>
-  <Target Name="FixAssemblyReferences" BeforeTargets="ResolveAssemblyReferences">
-    <ItemGroup>
-      <Reference Remove="@(Reference)" />
-      <_ResolvedProjectReferencePaths Remove="@(_ResolvedProjectReferencePaths)" />
-    </ItemGroup>
-  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets')" />
 </Project>

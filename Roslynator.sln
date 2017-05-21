@@ -1,16 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26510.0
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roslynator.Implementation", "src\Roslynator.Implementation\Roslynator.Implementation.csproj", "{9CCD8D09-EA2E-4818-A1A6-6AC9D068EBB4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roslynator.Interfaces", "src\Roslynator.Interfaces\Roslynator.Interfaces.csproj", "{77231B6B-E213-4450-9A22-81C86BD2C8F8}"
 EndProject
+Project("{5DD5E4FA-CB73-4610-85AB-557B54E96AA9}") = "Roslynator", "src\Roslynator\Roslynator.nuproj", "{5BAA7158-54C2-46DA-8126-66DA732DB857}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roslynator.Tests", "test\Roslynator.Tests\Roslynator.Tests.csproj", "{CC213493-1AC7-487A-B4BC-5BCEF713469C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B2A130A3-7FCE-4805-BCCE-F74729890F7B}"
 	ProjectSection(SolutionItems) = preProject
+		corebuild.cmd = corebuild.cmd
+		corebuild.proj = corebuild.proj
 		Directory.Build.props = Directory.Build.props
 		src\Directory.Build.props = src\Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
@@ -31,6 +35,10 @@ Global
 		{77231B6B-E213-4450-9A22-81C86BD2C8F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77231B6B-E213-4450-9A22-81C86BD2C8F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77231B6B-E213-4450-9A22-81C86BD2C8F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BAA7158-54C2-46DA-8126-66DA732DB857}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BAA7158-54C2-46DA-8126-66DA732DB857}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BAA7158-54C2-46DA-8126-66DA732DB857}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BAA7158-54C2-46DA-8126-66DA732DB857}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CC213493-1AC7-487A-B4BC-5BCEF713469C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC213493-1AC7-487A-B4BC-5BCEF713469C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC213493-1AC7-487A-B4BC-5BCEF713469C}.Release|Any CPU.ActiveCfg = Release|Any CPU

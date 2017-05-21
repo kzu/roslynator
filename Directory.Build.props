@@ -1,8 +1,9 @@
 <Project>
-	<PropertyGroup>
-		<MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
 
-		<DebugSymbols>true</DebugSymbols>
-		<Optimize>false</Optimize>
-	</PropertyGroup>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <AppendTargetFrameworkToOutputPath Condition="'$(AppendTargetFrameworkToOutputPath)' == ''">false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
 </Project>
