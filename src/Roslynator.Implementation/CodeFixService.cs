@@ -57,13 +57,18 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             if (provider == null)
                 return ImmutableArray<ICodeFix>.Empty;
 
-            var diagnostics = compilation.GetDiagnostics(cancellationToken).Where(x => provider.FixableDiagnosticIds.Contains(x.Id));
+            var diagnostics = compilation.GetDiagnostics(cancellationToken).Where(x => provider.FixableDiagnosticIds.Contains(x.Id))
+                // Only consider the diagnostics raised by the target document.
+                .Where(d =>
+                    d.Location.Kind == LocationKind.SourceFile &&
+                    d.Location.GetLineSpan().Path == document.FilePath);
+
             var codeFixes = new List<ICodeFix>();
             foreach (var diagnostic in diagnostics)
             {
                 await provider.RegisterCodeFixesAsync(
-                    new CodeFixContext(document, diagnostic, 
-                    (action, diag) => codeFixes.Add(new CodeFixAdapter(action, diag, codeFixName)), 
+                    new CodeFixContext(document, diagnostic,
+                    (action, diag) => codeFixes.Add(new CodeFixAdapter(action, diag, codeFixName)),
                     cancellationToken));
             }
 
