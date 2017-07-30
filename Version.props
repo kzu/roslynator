@@ -1,5 +1,13 @@
-<Project>
-  <PropertyGroup>
-    <Version>0.2.4</Version>
-  </PropertyGroup>
+<Project InitialTargets="SetVersion">
+	<ItemGroup>
+		<PackageReference Include="GitInfo" Version="*" PrivateAssets="all" />
+	</ItemGroup>
+
+	<Target Name="GitVersion" />
+
+	<Target Name="SetVersion" DependsOnTargets="GitVersion">
+		<PropertyGroup>
+			<Version Condition="'$(GitSemVerMajor)' != ''">$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)</Version>
+		</PropertyGroup>
+	</Target>
 </Project>

@@ -2,11 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <AssemblyName>Roslyn.Services.Editor.UnitTests</AssemblyName>
+    <AssemblyName>Roslyn.VisualStudio.Services.UnitTests</AssemblyName>
     <RootNamespace>Microsoft.CodeAnalysis.Diagnostics</RootNamespace>
     <IsPackable>false</IsPackable>
     <IncludeFrameworkReferencesInPackage>false</IncludeFrameworkReferencesInPackage>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Extensions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Extensions.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Roslynator.Interfaces\Roslynator.Interfaces.csproj" />

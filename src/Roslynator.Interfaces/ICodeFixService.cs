@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Host;
 
 namespace Microsoft.CodeAnalysis.CodeFixes
@@ -26,18 +27,20 @@ namespace Microsoft.CodeAnalysis.CodeFixes
         /// specified document.
         /// </summary>
         /// <param name="document">The <see cref="Document"/> to retrieve code fixes for.</param>
+        /// <param name="analyzers">Optional <see cref="DiagnosticAnalyzer"/>s to run during the code fix population.</param>
         /// <param name="cancellationToken">Optional <see cref="CancellationToken"/> for the operation.</param>
         /// <returns>Available code fixes, if any.</returns>
-        Task<ImmutableArray<ICodeFix>> GetCodeFixes(Document document, CancellationToken cancellationToken = default(CancellationToken));
+        Task<ImmutableArray<ICodeFix>> GetCodeFixes(Document document, ImmutableArray<DiagnosticAnalyzer> analyzers = default(ImmutableArray<DiagnosticAnalyzer>), CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Gets the available code fixes from the given provider for the 
         /// specified document.
         /// </summary>
         /// <param name="document">The <see cref="Document"/> to retrieve code fixes for.</param>
-        /// <param name="codeFixName">The name of a code fix provider, as listed in <see cref="CodeFixNames"/>.</param>
+        /// <param name="codeFixName">The name of a code fix provider, such as one listed in <see cref="CodeFixNames"/>.</param>
+        /// <param name="analyzers">Optional <see cref="DiagnosticAnalyzer"/>s to run during the code fix population.</param>
         /// <param name="cancellationToken">Optional <see cref="CancellationToken"/> for the operation.</param>
         /// <returns>Available code fixes, if any.</returns>
-        Task<ImmutableArray<ICodeFix>> GetCodeFixes(Document document, string codeFixName, CancellationToken cancellationToken = default(CancellationToken));
+        Task<ImmutableArray<ICodeFix>> GetCodeFixes(Document document, string codeFixName, ImmutableArray<DiagnosticAnalyzer> analyzers = default(ImmutableArray<DiagnosticAnalyzer>), CancellationToken cancellationToken = default(CancellationToken));
     }
 }

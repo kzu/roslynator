@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
                     )
                 );
 
-            using (var output = new StreamWriter(@"..\..\..\..\Roslynator\CodeFixNames.g.cs", false))
+            using (var output = new StreamWriter(@"..\..\..\Roslynator.Interfaces\CodeFixNames.g.cs", false))
             {
                 ns.NormalizeWhitespace().WriteTo(output);
             }

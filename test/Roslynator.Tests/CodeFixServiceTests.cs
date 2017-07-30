@@ -5,29 +5,16 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Text;
 using Xunit;
+using Xunit.Abstractions;
 using static TestHelpers;
 
 namespace Microsoft.CodeAnalysis.Diagnostics.Tests
 {
-    public class EndToEndTests
+    public class CodeFixServiceTests
     {
-        [Fact]
-        public void CreatingHost()
-        {
-            var host = Roslynator.CreateHost();
+        ITestOutputHelper output;
 
-            Assert.NotNull(host);
-        }
-
-        [Fact]
-        public void WhenGettingCompositionContext()
-        {
-            var (workspace, _) = CreateWorkspaceAndProject(LanguageNames.CSharp);
-
-            var composition = workspace.Services.GetRequiredService<ICompositionContextService>().CompositionContext;
-            
-            Assert.NotNull(composition);
-        }
+        public CodeFixServiceTests(ITestOutputHelper output) => this.output = output;
 
         [Fact]
         public async Task WhenGettingCodeFix()
@@ -47,7 +34,7 @@ End Class";
                 loader: TextLoader.From(TextAndVersion.Create(SourceText.From(vb), VersionStamp.Create()))));
 
             var codeFixService = workspace.Services.GetRequiredService<ICodeFixService>();
-            var codeFixes = await codeFixService.GetCodeFixes(document, CodeFixNames.VisualBasic.AddOverloads, TimeoutToken(5));
+            var codeFixes = await codeFixService.GetCodeFixes(document, CodeFixNames.VisualBasic.AddOverloads, cancellationToken: TimeoutToken(5));
 
             Assert.True(codeFixes.Any(), $"Did not find expected 'AddOverloads' code fix.");
         }
@@ -69,7 +56,7 @@ public class Disposable : BaseDisposable, IDisposable
 ";
 
             var (workspace, project) = CreateWorkspaceAndProject(LanguageNames.CSharp);
-            
+
             var document = workspace.AddDocument(DocumentInfo.Create(
                 DocumentId.CreateNewId(project.Id),
                 "code.cs",
@@ -77,7 +64,7 @@ public class Disposable : BaseDisposable, IDisposable
                 loader: TextLoader.From(TextAndVersion.Create(SourceText.From(cs), VersionStamp.Create()))));
 
             var service = workspace.Services.GetRequiredService<ICodeFixService>();
-            var fixes = await service.GetCodeFixes(document, TimeoutToken(5));
+            var fixes = await service.GetCodeFixes(document, cancellationToken: TimeoutToken(5));
 
             var providedBy = fixes.GroupBy(x => x.Provider);
 
@@ -110,12 +97,12 @@ End Class";
 
             var document = workspace.AddDocument(DocumentInfo.Create(
                 DocumentId.CreateNewId(project.Id),
-                "code.vb", 
-                filePath: Path.GetTempFileName(), 
+                "code.vb",
+                filePath: Path.GetTempFileName(),
                 loader: TextLoader.From(TextAndVersion.Create(SourceText.From(vb), VersionStamp.Create()))));
 
             var codeFixService = workspace.Services.GetRequiredService<ICodeFixService>();
-            var codeFixes = await codeFixService.GetCodeFixes(document, CodeFixNames.VisualBasic.AddOverloads, TimeoutToken(5));
+            var codeFixes = await codeFixService.GetCodeFixes(document, CodeFixNames.VisualBasic.AddOverloads, cancellationToken: TimeoutToken(5));
 
             foreach (var codeFix in codeFixes)
             {
@@ -147,7 +134,7 @@ public class Disposable : IDisposable
                 loader: TextLoader.From(TextAndVersion.Create(SourceText.From(cs), VersionStamp.Create()))));
 
             var codeFixService = workspace.Services.GetRequiredService<ICodeFixService>();
-            var codeFixes = await codeFixService.GetCodeFixes(document, CodeFixNames.All.ImplementInterface, TimeoutToken(5));
+            var codeFixes = await codeFixService.GetCodeFixes(document, CodeFixNames.All.ImplementInterface, cancellationToken: TimeoutToken(5));
 
             foreach (var codeFix in codeFixes)
             {

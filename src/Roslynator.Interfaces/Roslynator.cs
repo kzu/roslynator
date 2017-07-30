@@ -25,7 +25,7 @@ public static partial class Roslynator
             .WithAssemblies(MefHostServices
                 .DefaultAssemblies
                 .Add(typeof(Roslynator).Assembly)
-                .Add(Assembly.LoadFrom("Roslyn.Services.Editor.UnitTests.dll"))
+                .Add(Assembly.LoadFrom("Roslyn.VisualStudio.Services.UnitTests.dll"))
                 .AddRange(additionalAssemblies ?? Enumerable.Empty<Assembly>()))
             .CreateContainer();
 

@@ -8,15 +8,6 @@ using Microsoft.CodeAnalysis.Shared.Extensions;
 
 namespace Microsoft.CodeAnalysis
 {
-    [Export(typeof(ICodeAnalysisUtilities))]
-    [ExportWorkspaceService(typeof(ICodeAnalysisUtilities))]
-    [Shared]
-    class CodeAnalysisUtilities : ICodeAnalysisUtilities
-    {
-        public ImmutableArray<ISymbol> GetOverridableMembers(INamedTypeSymbol containingType, CancellationToken cancellationToken)
-            => containingType.GetOverridableMembers(cancellationToken);
-    }
-
     // See: http://source.roslyn.io/#q=GetOverridableMembers
     static class Extensions
     {

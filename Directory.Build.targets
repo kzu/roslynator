@@ -1,6 +1,6 @@
 <Project>
   <ItemGroup>
-    <PackageReference Include="NuGet.Build.Packaging" Version="0.1.283" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.1.324" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug' and Exists('..\..\roslyn\Binaries\Debug\Dlls')">
@@ -44,9 +44,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release' or !Exists('..\..\roslyn\Binaries\Debug\Dlls')">
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.1.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="2.1.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Features" Version="2.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="2.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="2.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Features" Version="2.3.0" />
   </ItemGroup>
 
 </Project>
