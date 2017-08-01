@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 
 namespace Microsoft.CodeAnalysis.Diagnostics
@@ -31,6 +32,9 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return;
 
             var overridable = symbol.GetOverridableMembers(context.CancellationToken);
+            if (context.Node.Language == LanguageNames.VisualBasic)
+                overridable = overridable.Where(x => x.MetadataName != "Finalize").ToImmutableArray();
+
             if (overridable.Length != 0)
             {
                 var diagnostic = Diagnostic.Create(Rule, context.Node.GetLocation());

@@ -47,6 +47,9 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return document.Project.Solution;
 
             var overridables = symbol.GetOverridableMembers(cancellationToken);
+            if (type.Language == LanguageNames.VisualBasic)
+                overridables = overridables.Where(x => x.MetadataName != "Finalize").ToImmutableArray();
+
             var generator = SyntaxGenerator.GetGenerator(document);
             var memberTasks = overridables.SelectAsArray(
                 m => generator.OverrideAsync(m, symbol, document, cancellationToken: cancellationToken));
