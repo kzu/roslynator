@@ -27,7 +27,19 @@ namespace Microsoft.CodeAnalysis.CodeFixes
 
         [ImportingConstructor]
         public CodeFixService([ImportMany]IEnumerable<Lazy<CodeFixProvider, CodeChangeProviderMetadata>> codeFixProviders)
-            => this.codeFixProviders = codeFixProviders;
+            => this.codeFixProviders = codeFixProviders.Concat(new[] 
+            {
+                // We don't expose this provider, it's a built-in one that 
+                // can be invoked explicitly. If we registered it, it would 
+                // pollute the code editor all the time.
+                new Lazy<CodeFixProvider, CodeChangeProviderMetadata>(
+                    () => new OverrideAllMembersCodeFix(), 
+                    new CodeChangeProviderMetadata(
+                        nameof(OverrideAllMembersCodeFix),
+                        null, null,
+                        LanguageNames.CSharp, LanguageNames.VisualBasic))
+            })
+            .ToImmutableList();
 
         public CodeFixProvider GetCodeFixProvider(string language, string codeFixName)
             => codeFixProviders

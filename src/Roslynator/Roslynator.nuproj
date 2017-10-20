@@ -53,6 +53,5 @@ Compiled from $(GitCommit)
     </PropertyGroup>
   </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
-  <Import Project="..\..\Version.props" />
   <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets')" />
 </Project>

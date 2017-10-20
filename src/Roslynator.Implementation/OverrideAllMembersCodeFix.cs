@@ -11,8 +11,9 @@ using Microsoft.CodeAnalysis.Shared.Extensions;
 
 namespace Microsoft.CodeAnalysis.Diagnostics
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, new[] { LanguageNames.VisualBasic }, Name = nameof(OverrideAllMembersCodeFix))]
-    [Shared]
+    // Instead of being exported, it's registered explicitly in the ICodeFixService
+    //[ExportCodeFixProvider(LanguageNames.CSharp, new[] { LanguageNames.VisualBasic }, Name = nameof(OverrideAllMembersCodeFix))]
+    //[Shared]
     class OverrideAllMembersCodeFix : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds

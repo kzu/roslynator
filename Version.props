@@ -1,6 +1,6 @@
 <Project InitialTargets="SetVersion">
 	<ItemGroup>
-		<PackageReference Include="GitInfo" Version="*" PrivateAssets="all" />
+		<PackageReference Include="GitInfo" Version="2.0.0" PrivateAssets="all" />
 	</ItemGroup>
 
 	<Target Name="GitVersion" />

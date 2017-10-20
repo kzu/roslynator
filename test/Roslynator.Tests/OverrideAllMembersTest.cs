@@ -37,7 +37,7 @@ public class Foo
 
             document = await codeFixService.ApplyAsync("OverrideAllMembersCodeFix", document, TimeoutToken(5));
 
-            //output.WriteLine(document.GetTextAsync().Result.ToString());
+            output.WriteLine(document.GetTextAsync().Result.ToString());
 
             var syntax = await document.GetSyntaxRootAsync(TimeoutToken(1));
             var members = syntax.DescendantNodes().Where(n => n.IsKind(CodeAnalysis.CSharp.SyntaxKind.MethodDeclaration)).Count();
