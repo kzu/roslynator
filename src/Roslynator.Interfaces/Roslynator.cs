@@ -1,4 +1,5 @@
 ﻿using System.Composition.Hosting;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -21,12 +22,22 @@ public static partial class Roslynator
     /// to inject into the host services via MEF.</param>
     public static HostServices CreateHost(params Assembly[] additionalAssemblies)
     {
-        var composition = new ContainerConfiguration()
-            .WithAssemblies(MefHostServices
+        var assemblies = MefHostServices
                 .DefaultAssemblies
-                .Add(typeof(Roslynator).Assembly)
-                .Add(Assembly.LoadFrom("Roslyn.VisualStudio.Services.UnitTests.dll"))
-                .AddRange(additionalAssemblies ?? Enumerable.Empty<Assembly>()))
+                .Add(typeof(Roslynator).Assembly);
+
+        // We may have been IL merged
+        if (typeof(Roslynator).Assembly.GetType("Microsoft.CodeAnalysis.Host.CodeAnalysisServices") == null)
+            assemblies = assemblies.Add(Assembly.LoadFrom(
+                Path.Combine(
+                    Path.GetDirectoryName(typeof(Roslynator).Assembly.ManifestModule.FullyQualifiedName),
+                    "Roslyn.VisualStudio.Services.UnitTests.dll")));
+
+        if (additionalAssemblies != null)
+            assemblies = assemblies.AddRange(additionalAssemblies);
+
+        var composition = new ContainerConfiguration()
+            .WithAssemblies(assemblies)
             .CreateContainer();
 
         // Setup a mechanism to import the CompositionContext from anywhere if needed.
