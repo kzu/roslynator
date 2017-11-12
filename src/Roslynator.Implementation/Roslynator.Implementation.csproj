@@ -9,14 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Extensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Extensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Roslynator.Interfaces\Roslynator.Interfaces.csproj" />
   </ItemGroup>
 
